@@ -1,7 +1,13 @@
+import concurrent.futures
+import contextlib
+import datetime
 import logging
 import pathlib
+from collections.abc import Iterable
 
+import aind_session
 import npc_io
+import npc_session
 import numpy as np
 import upath
 import zarr
@@ -10,6 +16,75 @@ import aind_ephys_cleanup.models as models
 
 logger = logging.getLogger(__name__)
 
+
+
+def _get_aind_session_from_subject_date_time(
+    subject_id: int, date: str, time: str, search_before = datetime.timedelta(minutes=1), search_after = datetime.timedelta(minutes=1)
+) -> aind_session.Session:
+    """
+    
+    >>> 
+    """
+    matches = aind_session.get_sessions(
+        subject_id=subject_id,
+        platform='ecephys',
+        start_date=datetime.datetime.fromisoformat(f"{date} {time}") - search_before,
+        end_date=datetime.datetime.fromisoformat(f"{date} {time}") + search_after,
+    )
+    if not matches:
+        raise ValueError(f"No matching AIND session found for {subject_id=} {date=} {time=}. Data likely has not been uploaded to Code Ocean.")
+    if len(matches) > 1:
+        raise AssertionError(f"Multiple matching AIND sessions found for {subject_id=} {date=} {time=}: {matches=}")
+    return matches[0]
+
+def populate_session_ids(dat_info: Iterable[models.DatData]) -> tuple[models.DatData, ...]:
+    """For a list of DatData objects, populate the session_id field if it is missing by searching on
+    Code Ocean / S3 using the subject_id, date and start_time associated with a .dat file.
+
+    Notes: 
+     - data may not have a discoverable AIND session if it hasn't been uploaded, in which case the
+       session_id will remain None.
+     - this function uses a thread pool to speed up lookups, as each lookup requires a web call.
+     - if input models already have session_id populated, they will be validated and updated if incorrect.
+    """
+    if isinstance(dat_info, models.DatData):
+        dat_info = [dat_info]
+    dat_info = tuple(dat_info)  # Ensure we can iterate multiple times
+    info_to_session_id: dict[tuple[int, str, str], str] = {}
+    unique_session_info = set()
+    for d in dat_info:
+        if d.session_id is not None:
+            with contextlib.suppress(ValueError):
+                npc_session.extract_aind_session_id(d.session_id)
+                info_to_session_id[(d.subject_id, d.date, d.start_time)] = d.session_id
+                continue
+        unique_session_info.add((d.subject_id, d.date, d.start_time))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_info = {}
+        for info in unique_session_info:
+            future = executor.submit(_get_aind_session_from_subject_date_time, *info)
+            future_to_info[future] = info
+        for future in concurrent.futures.as_completed(future_to_info):
+            try:
+                session = future.result()
+            except ValueError:
+                # No matching session found
+                continue
+            info = future_to_info[future]
+            info_to_session_id[info] = session.id
+    updated_models = []
+    for d in dat_info:
+        if (d.subject_id, d.date, d.start_time) not in info_to_session_id:
+            # No matching session found, leave unmodified
+            updated_models.append(d)
+            continue
+        else:
+            updated_models.append(
+                d.model_copy(
+                    update={"session_id": info_to_session_id[(d.subject_id, d.date, d.start_time)]}
+                )
+            )
+    return tuple(updated_models)
 
 def get_settings_xml_path(dat_or_zarr_path: str) -> upath.UPath:
     """

@@ -43,8 +43,10 @@ class DatData(pydantic.BaseModel):
 
     @pydantic.computed_field()
     @property
-    def date(self) -> str | None:
-        return npc_session.extract_isoformat_date(self.path)
+    def date(self) -> str:
+        date = npc_session.extract_isoformat_date(self.path)
+        assert date is not None, f"Could not determine date from path: {self.path}"
+        return date
 
     @pydantic.computed_field()
     @property
