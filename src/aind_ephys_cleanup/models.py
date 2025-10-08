@@ -1,6 +1,7 @@
 
 import enum
 import re
+from typing import Self
 
 import npc_ephys
 import npc_session
@@ -20,69 +21,91 @@ class DatData(pydantic.BaseModel):
     dtype: str
     size: int
     path: str
+    # the following fields are populated automatically (or attempted) if not provided
+    session_id: str | None = None # this is the only one we cannot always determine automatically
+    """AIND session ID: <platform>_<subject_id>_<date>_<time>"""
+    subject_id: int = None # type: ignore[assignment]
+    date: str = None # type: ignore[assignment]
+    settings_xml_path: str = None # type: ignore[assignment]
+    start_time: str = None # type: ignore[assignment]
+    device_name: str = None # type: ignore[assignment]
+    device_type: RecordingType = None # type: ignore[assignment]
 
     class Config:
         arbitrary_types_allowed = True
         validate_assignment = True
 
-    @pydantic.computed_field()
-    @property
-    def session_id(self) -> npc_session.AINDSessionRecord | None:
-        try:
-            return npc_session.AINDSessionRecord(self.path)
-        except ValueError:
-            return None
+    @pydantic.model_validator(mode='after')
+    def try_get_session_id(self) -> Self:
+        if self.session_id is None:
+            try:
+                self.session_id = npc_session.AINDSessionRecord(self.path)
+            except ValueError: # cannot determine session ID from path
+                pass
+        return self
 
-    @pydantic.computed_field()
-    @property
-    def subject_id(self) -> int:
+    @pydantic.model_validator(mode='after')
+    def ensure_settings_xml_path(self) -> Self:
+        if self.settings_xml_path is not None:
+            return self
+        import aind_ephys_cleanup.utils as utils
+        self.settings_xml_path = utils.get_settings_xml_path(self.path).as_posix()
+        return self
+
+    @pydantic.model_validator(mode='after')
+    def ensure_subject_id(self) -> Self:
+        if self.subject_id is not None:
+            return self
         subject_id = npc_session.extract_subject(self.path)
         if subject_id is None:
             raise ValueError(f"Could not determine subject ID from path: {self.path}")
-        return subject_id
+        self.subject_id = subject_id
+        return self
 
-    @pydantic.computed_field()
-    @property
-    def date(self) -> str:
+    @pydantic.model_validator(mode='after')
+    def ensure_date(self) -> Self:
+        if self.date is not None:
+            return self
         date = npc_session.extract_isoformat_date(self.path)
         assert date is not None, f"Could not determine date from path: {self.path}"
-        return date
+        self.date = date
+        return self
 
-    @pydantic.computed_field()
-    @property
-    def settings_xml_path(self) -> str:
-        import aind_ephys_cleanup.utils as utils
-        return utils.get_settings_xml_path(self.path).as_posix()
+    @pydantic.model_validator(mode='after')
+    def ensure_start_time(self) -> Self:
+        if self.start_time is not None:
+            return self
+        assert self.settings_xml_path is not None, "settings_xml_path must be set to determine start_time"
+        self.start_time = npc_ephys.get_settings_xml_data(self.settings_xml_path).start_time.isoformat()
+        return self
 
-    @pydantic.computed_field()
-    @property
-    def start_time(self) -> str:
-        return npc_ephys.get_settings_xml_data(self.settings_xml_path).start_time.isoformat()
-
-    @pydantic.computed_field()
-    @property
-    def device_name(self) -> str:
+    @pydantic.model_validator(mode='after')
+    def ensure_device_name(self) -> Self:
+        if self.device_name is not None:
+            return self
         probe_match = re.search(PROBE_REGEX, self.path)
         if probe_match:
-            return probe_match.group(0)
-        nidaq_match = re.search(NIDAQ_REGEX, self.path)
-        if nidaq_match:
-            return nidaq_match.group(0)
-        raise ValueError(f"Could not determine device name from path: {self.path}")
+            self.device_name = probe_match.group(0)
+        else:
+            nidaq_match = re.search(NIDAQ_REGEX, self.path)
+            if nidaq_match:
+                self.device_name = nidaq_match.group(0)
+            else:
+                raise ValueError(f"Could not determine device name from path: {self.path}")
+        return self
 
-    @pydantic.computed_field()
-    @property
-    def device_type(self) -> RecordingType:
+    @pydantic.model_validator(mode='after')
+    def ensure_device_type(self) -> Self:
+        if self.device_type is not None:
+            return self
         if self.device_name.startswith("NI-DAQmx"):
-            return RecordingType.NIDAQ
+            self.device_type = RecordingType.NIDAQ
         if self.device_name.endswith("-AP"):
-            return RecordingType.AP
+            self.device_type = RecordingType.AP
         elif self.device_name.endswith("-LFP"):
-            return RecordingType.LFP
+            self.device_type = RecordingType.LFP
         raise ValueError(f"Unknown device type for path: {self.path}")
-
-
-
+    
 class ZarrData(DatData):
 
-    segment_name: str
+    zarr_key: str
