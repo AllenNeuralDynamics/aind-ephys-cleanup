@@ -104,7 +104,9 @@ class DatData(pydantic.BaseModel):
             self.device_type = RecordingType.AP
         elif self.device_name.endswith("-LFP"):
             self.device_type = RecordingType.LFP
-        raise ValueError(f"Unknown device type for path: {self.path}")
+        else:
+            raise ValueError(f"Unknown device type for path: {self.path}")
+        return self
     
 class ZarrData(DatData):
 
