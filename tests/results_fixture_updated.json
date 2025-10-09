@@ -1,0 +1,122 @@
+[
+    {
+        "dtype": "int16",
+        "size": 89079281280,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_744279_20250113/DRpilot_744279_20250113/Record Node 108/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeB-AP/continuous.dat",
+        "session_id": "ecephys_744279_2025-01-13_13-26-43",
+        "subject_id": 744279,
+        "date": "2025-01-13",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_744279_20250113/DRpilot_744279_20250113/Record Node 108/settings.xml",
+        "start_time": "13:27:03",
+        "device_name": "Neuropix-PXI-100.ProbeB-AP",
+        "device_type": "AP"
+    },
+    {
+        "dtype": "int16",
+        "size": 80846959104,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_759434_20250203/DRpilot_759434_20250203/Record Node 104/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeD-AP/continuous.dat",
+        "session_id": "ecephys_759434_2025-02-03_13-16-51",
+        "subject_id": 759434,
+        "date": "2025-02-03",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_759434_20250203/DRpilot_759434_20250203/Record Node 104/settings.xml",
+        "start_time": "13:17:11",
+        "device_name": "Neuropix-PXI-100.ProbeD-AP",
+        "device_type": "AP"
+    },
+    {
+        "dtype": "int16",
+        "size": 288090624,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_733780_20240826_surface_channels/Record Node 104/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeE-LFP/continuous.dat",
+        "session_id": "ecephys_733780_2024-08-26_16-55-02",
+        "subject_id": 733780,
+        "date": "2024-08-26",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_733780_20240826_surface_channels/Record Node 104/settings.xml",
+        "start_time": "16:55:02",
+        "device_name": "Neuropix-PXI-100.ProbeE-LFP",
+        "device_type": "LFP"
+    },
+    {
+        "dtype": "int16",
+        "size": 3457138176,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_741137_20241010_surface_channels/Record Node 108/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeA-AP/continuous.dat",
+        "session_id": "ecephys_741137_2024-10-10_15-21-13",
+        "subject_id": 741137,
+        "date": "2024-10-10",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_741137_20241010_surface_channels/Record Node 108/settings.xml",
+        "start_time": "15:21:13",
+        "device_name": "Neuropix-PXI-100.ProbeA-AP",
+        "device_type": "AP"
+    },
+    {
+        "dtype": "int16",
+        "size": 3457622016,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_702136_20240307_surface_channels/Record Node 103/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeA-AP/continuous.dat",
+        "session_id": "ecephys_702136_2024-03-07_14-49-27",
+        "subject_id": 702136,
+        "date": "2024-03-07",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_702136_20240307_surface_channels/Record Node 103/settings.xml",
+        "start_time": "14:49:27",
+        "device_name": "Neuropix-PXI-100.ProbeA-AP",
+        "device_type": "AP"
+    },
+    {
+        "dtype": "int16",
+        "size": 3457778688,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_713655_20240807_surface_channels/Record Node 108/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeC-AP/continuous.dat",
+        "session_id": "ecephys_713655_2024-08-07_14-11-42",
+        "subject_id": 713655,
+        "date": "2024-08-07",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_713655_20240807_surface_channels/Record Node 108/settings.xml",
+        "start_time": "14:11:42",
+        "device_name": "Neuropix-PXI-100.ProbeC-AP",
+        "device_type": "AP"
+    },
+    {
+        "dtype": "int16",
+        "size": 901847808,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_724612_20240725/DRpilot_724612_20240725/Record Node 104/experiment1/recording2/continuous/Neuropix-PXI-100.ProbeF-LFP/continuous.dat",
+        "session_id": null,
+        "subject_id": 724612,
+        "date": "2024-07-25",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_724612_20240725/DRpilot_724612_20240725/Record Node 104/settings.xml",
+        "start_time": "16:25:19",
+        "device_name": "Neuropix-PXI-100.ProbeF-LFP",
+        "device_type": "LFP"
+    },
+    {
+        "dtype": "int16",
+        "size": 288139008,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_703333_20240409_surface_channels/Record Node 103/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeB-LFP/continuous.dat",
+        "session_id": "ecephys_703333_2024-04-09_15-14-46",
+        "subject_id": 703333,
+        "date": "2024-04-09",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_703333_20240409_surface_channels/Record Node 103/settings.xml",
+        "start_time": "15:14:46",
+        "device_name": "Neuropix-PXI-100.ProbeB-LFP",
+        "device_type": "LFP"
+    },
+    {
+        "dtype": "int16",
+        "size": 288098688,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_761583_20241219_surface_channels/Record Node 104/experiment1/recording1/continuous/Neuropix-PXI-100.ProbeD-LFP/continuous.dat",
+        "session_id": "ecephys_761583_2024-12-19_12-20-13",
+        "subject_id": 761583,
+        "date": "2024-12-19",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_761583_20241219_surface_channels/Record Node 104/settings.xml",
+        "start_time": "12:20:13",
+        "device_name": "Neuropix-PXI-100.ProbeD-LFP",
+        "device_type": "LFP"
+    },
+    {
+        "dtype": "int16",
+        "size": 72091528,
+        "path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_733891_20240917_surface_channels/Record Node 104/experiment1/recording1/continuous/NI-DAQmx-101.PXI-6133/continuous.dat",
+        "session_id": "ecephys_733891_2024-09-17_14-28-26",
+        "subject_id": 733891,
+        "date": "2024-09-17",
+        "settings_xml_path": "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot/DRpilot_733891_20240917_surface_channels/Record Node 104/settings.xml",
+        "start_time": "14:28:26",
+        "device_name": "NI-DAQmx-101.PXI-6133",
+        "device_type": "NIDAQ"
+    }
+]
