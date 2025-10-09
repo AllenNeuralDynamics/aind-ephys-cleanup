@@ -100,7 +100,7 @@ class DatData(pydantic.BaseModel):
             return self
         if self.device_name.startswith("NI-DAQmx"):
             self.device_type = RecordingType.NIDAQ
-        if self.device_name.endswith("-AP"):
+        elif self.device_name.endswith("-AP"):
             self.device_type = RecordingType.AP
         elif self.device_name.endswith("-LFP"):
             self.device_type = RecordingType.LFP
