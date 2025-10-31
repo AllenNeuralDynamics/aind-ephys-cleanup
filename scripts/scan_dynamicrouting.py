@@ -1,4 +1,5 @@
 
+import datetime
 import json
 import logging
 import pathlib
@@ -20,7 +21,8 @@ logger = logging.getLogger(__name__)
 ROOT = pathlib.Path(
     "//allen/programs/mindscope/workgroups/dynamicrouting/PilotEphys/Task 2 pilot"
 )
-RESULTS = pathlib.Path(__file__).parent / "results.json"
+RESULTS = pathlib.Path(__file__).parent / str(datetime.date.today()) / "results.json"
+RESULTS.parent.mkdir(exist_ok=True, parents=True)
 
 lock = threading.Lock()
 
@@ -104,7 +106,8 @@ def main(delete_previous: bool = False) -> None:
         executor.map(process_one_file, dat_files)
     update_session_ids()
     write_matches()
-
+    validate_all_matches_with_metrics()
+    
 def update_session_ids() -> None:
     data = json.loads(RESULTS.read_text())
     dat_info = [aind_ephys_cleanup.models.DatData(**item) for item in data]
@@ -880,4 +883,4 @@ def validate_all_matches_with_metrics(
 
 if __name__ == "__main__":
     # Compute validation metrics for all matched pairs
-    validate_all_matches_with_metrics()
+    main()

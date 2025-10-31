@@ -1,3 +1,4 @@
+import datetime
 import logging
 import pathlib
 import polars as pl
@@ -46,7 +47,7 @@ for row in safe_to_delete.filter(pl.col('session_id').is_in(sessions_to_delete))
         print(f"Deleting {row['path']}")
         path.unlink()
         # dump path to deleted.txt
-        with open(pathlib.Path(__file__).parent / "deleted.txt", "a") as f:
+        with open(pathlib.Path(__file__).parent / f"deleted_{datetime.date.today()}.txt", "a") as f:
             f.write(f"{row['path']}\n")
     deleted_gb += row['size_gb']
 print(f"{'DRYRUN: ' if DRYRUN else ''}Deleted {deleted_gb: .2f} GB in total")
